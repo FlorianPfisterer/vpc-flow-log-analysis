@@ -1,0 +1,19 @@
+{
+  "name": "flow-log-analysis",
+  "version": "1.0.0",
+  "description": "Analyze AWS VPC flow logs",
+  "main": "index.js",
+  "scripts": {
+    "test": "echo \"Error: no test specified\" && exit 1"
+  },
+  "repository": {
+    "type": "git",
+    "url": "git+https://github.com/FlorianPfisterer/aws-flow-log-analysis.git"
+  },
+  "author": "Florian Pfisterer",
+  "license": "ISC",
+  "bugs": {
+    "url": "https://github.com/FlorianPfisterer/aws-flow-log-analysis/issues"
+  },
+  "homepage": "https://github.com/FlorianPfisterer/aws-flow-log-analysis#readme"
+}
