@@ -4,7 +4,8 @@
   "description": "Analyze AWS VPC flow logs",
   "main": "index.js",
   "scripts": {
-    "test": "echo \"Error: no test specified\" && exit 1"
+    "test": "echo \"Error: no test specified\" && exit 1",
+    "dev": "ts-node-dev src/index.ts"
   },
   "repository": {
     "type": "git",
@@ -15,5 +16,18 @@
   "bugs": {
     "url": "https://github.com/FlorianPfisterer/aws-flow-log-analysis/issues"
   },
-  "homepage": "https://github.com/FlorianPfisterer/aws-flow-log-analysis#readme"
+  "homepage": "https://github.com/FlorianPfisterer/aws-flow-log-analysis#readme",
+  "devDependencies": {
+    "@types/aws-sdk": "^2.7.0",
+    "@types/node": "^14.0.1",
+    "ts-node-dev": "^1.0.0-pre.44"
+  },
+  "dependencies": {
+    "aws-sdk": "^2.679.0",
+    "dotenv": "^8.2.0",
+    "fs": "0.0.1-security",
+    "gunzip-file": "^0.1.1",
+    "merge-files": "^0.1.2",
+    "typescript": "^3.9.2"
+  }
 }
