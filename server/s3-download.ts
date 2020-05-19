@@ -1,22 +1,9 @@
 import * as AWS from 'aws-sdk';
 import { config } from './config';
-import { removeUndef } from './utils';
-import { writeFile, mkdir, unlink } from 'fs';
+import { removeUndef, createFolderIfNotExists } from './utils';
+import { writeFile, unlink } from 'fs';
 const mergeFiles = require('merge-files');
-const gunzip = require('gunzip-file')
-
-const createFolderIfNotExists = async (path: string): Promise<void> => {
-    const folders = path.split('/');
-    folders.pop();  // last element is file path
-    const folderPath = folders.join('/');
-
-    return new Promise((resolve, reject) => {
-        mkdir(folderPath, { recursive: true }, (err) => {
-            if (err) reject(err);
-            else resolve();
-        })
-    });
-}
+const gunzip = require('gunzip-file');
 
 const downloadTask = 'download log data from AWS s3';
 const unzipTask = 'unzip log data';
