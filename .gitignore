@@ -2,6 +2,7 @@ data
 logs
 graphs
 client/graph.json
+graph-generator/known-ips.ts
 
 # Created by https://www.gitignore.io/api/node,macos,visualstudiocode
 # Edit at https://www.gitignore.io/?templates=node,macos,visualstudiocode

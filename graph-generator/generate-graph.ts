@@ -2,6 +2,7 @@ import { Request } from './request';
 import { writeFile, unlinkSync } from 'fs';
 import { createFolderIfNotExists, removeUndef } from './utils';
 import { symlinkSync } from 'fs';
+import { knownAddresses } from './known-ips';
 import * as path from 'path';
 
 type Node = string;
@@ -52,7 +53,12 @@ const separator = '<%>';
 const getEdges = (requests: Request[], minOccurrencesThreshold: number = 10, topK: number = -1): Edge[] => {
     const countByEdge: { [edge: string]: number } = {};
     requests.forEach(req => {
-        const edge = `${getNode(req.srcAddress, req.srcPort)}${separator}${getNode(req.destAddress, req.destPort)}`;
+        const src = getNode(req.srcAddress, req.srcPort);
+        const dst = getNode(req.destAddress, req.destPort);
+        const fst = src > dst ? src : dst;
+        const snd = fst === src ? dst : src;
+
+        const edge = `${fst}${separator}${snd}`;
         if (edge in countByEdge)
             countByEdge[edge] += 1;
         else
@@ -79,5 +85,8 @@ const getEdges = (requests: Request[], minOccurrencesThreshold: number = 10, top
 }
 
 const getNode = (address: string, port: number): Node => {
+    if (address in knownAddresses) {
+        return knownAddresses[address];
+    }
     return address; //`${address}:${port}`;
 }

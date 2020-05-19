@@ -31,7 +31,8 @@ function prepareGraph() {
                 }))
             };
 
-            new vis.Network(container, data, options);
+            const network = new vis.Network(container, data, options);
+            setTimeout(() => network.setOptions({ physics: { enabled: false } }), 2000);
         })
         .catch(err => console.error(err));
 }
