@@ -1,4 +1,9 @@
-export type Request = { srcAddress: string, srcPort: number, destAddress: string, destPort: number };
+export type Request = {
+    srcAddress: string;
+    srcPort: number;
+    destAddress: string;
+    destPort: number;
+};
 
 export const parseLine = (line: string): Request | undefined => {
     const fields = line.split(' ');
