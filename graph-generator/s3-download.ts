@@ -28,13 +28,28 @@ export const downloadAndPrepareLogs = async (): Promise<string> => {
     return mergedFileName;
 }
 
+async function getAllKeys(s3, params, allKeys = []) {
+    const response = await s3.listObjectsV2(params).promise();
+    response.Contents.forEach(obj => allKeys.push(obj));
+
+    if (response.NextContinuationToken) {
+        params.ContinuationToken = response.NextContinuationToken;
+        await getAllKeys(s3, params, allKeys);
+    }
+
+    return allKeys;
+}
+
 const downloadLogs = async (): Promise<string[]> => {
     const bucket = process.env.AWS_S3_BUCKET_NAME;
 
-    const s3 = new AWS.S3();
-    const objects = await s3.listObjects({ Bucket: bucket }).promise();
+    const s3 = new AWS.S3()
 
-    const filePaths: string[] = await Promise.all((objects.Contents || []).map(async object => {
+    const allObjects = await getAllKeys(s3,{ Bucket: bucket });
+    const selectedObjects = allObjects.slice(-2500);
+
+
+    const filePaths: string[] = await Promise.all((selectedObjects || []).map(async object => {
         const data = await s3.getObject({ Key: object.Key, Bucket: bucket }).promise();
 
         const fullPath = `data/${object.Key}`;
