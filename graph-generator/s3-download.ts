@@ -34,18 +34,20 @@ const downloadLogs = async (): Promise<string[]> => {
     const s3 = new AWS.S3();
     const objects = await s3.listObjects({ Bucket: bucket }).promise();
 
-    const filePaths: string[] = await Promise.all((objects.Contents || []).map(async object => {
-        const data = await s3.getObject({ Key: object.Key, Bucket: bucket }).promise();
+    const filePaths: string[] = await Promise.all((objects.Contents || [])
+        .filter(object => !object.Key?.endsWith('/'))
+        .map(async object => {
+            const data = await s3.getObject({ Key: object.Key, Bucket: bucket }).promise();
 
-        const fullPath = `data/${object.Key}`;
-        await createFolderIfNotExists(fullPath);
-        return new Promise((resolve, reject) => {
-            writeFile(fullPath, data.Body as Buffer, (err) => {
-                if (err) reject(err);
-                else resolve(fullPath);
+            const fullPath = `data/${object.Key}`;
+            await createFolderIfNotExists(fullPath);
+            return new Promise((resolve, reject) => {
+                writeFile(fullPath, data.Body as Buffer, (err) => {
+                    if (err) reject(err);
+                    else resolve(fullPath);
+                });
             });
-        });
-    })) as string[];
+        })) as string[];
 
     return filePaths;
 }
